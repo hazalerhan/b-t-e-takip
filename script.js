@@ -1,5 +1,5 @@
-// 1. VERİ DEPOSU
-const islemler = [];
+// 1. VERİ DEPOSU (Tarayıcının hafızasından varsa eski verileri çekiyoruz, yoksa boş dizi başlatıyoruz)
+const islemler = JSON.parse(localStorage.getItem("islemler")) || [];
 
 // 2. HESAPLAMA FONKSİYONU
 function bakiyeGuncelle() {
@@ -7,7 +7,6 @@ function bakiyeGuncelle() {
   let toplamGelen = 0;
 
   islemler.forEach(function(islem) {
-    // Mantık Değişimi: Miktar sıfırdan büyükse gelir, küçükse giderdir.
     if (islem.miktar > 0) {
       toplamGelen += islem.miktar;
     } else {
@@ -17,7 +16,6 @@ function bakiyeGuncelle() {
 
   const toplamBakiye = toplamGelen + toplamGiden;
 
-  // Yeni HTML ID'lerine göre verileri ekrana bas
   document.getElementById("bakiye").textContent = toplamBakiye;
   document.getElementById("gelen-miktar").textContent = "+" + toplamGelen + " TL";
   document.getElementById("gider-miktar").textContent = toplamGiden + " TL";
@@ -28,47 +26,56 @@ function listeyiGuncelle() {
   const listeAlan = document.getElementById("islemler");
   listeAlan.innerHTML = ""; 
 
-  islemler.forEach(function(islem) {
-    // Miktarın pozitif veya negatif olmasına göre CSS sınıfını (rengi) belirliyoruz
+  islemler.forEach(function(islem, index) {
     const islemTuru = islem.miktar > 0 ? "gelir" : "gider";
     
-    // Yeni HTML listeleme formatına uygun yapı
     listeAlan.innerHTML += `
       <li class="${islemTuru}">
         <span>${islem.islemAdi}</span>
         <span>${islem.miktar}</span>
-        <button class="sil-btn">X</button>
+        <button class="sil-btn" onclick="islemSil(${index})">X</button>
       </li>
     `;
   });
 }
 
-// 4. FORM İŞLEMLERİ (Tetikleyici)
+// 4. HAFIZAYI GÜNCELLEME VE KAYDETME YARDIMCISI
+function verileriKaydetVeGuncelle() {
+  localStorage.setItem("islemler", JSON.stringify(islemler));
+  bakiyeGuncelle();
+  listeyiGuncelle();
+}
+
+// 5. İŞLEM SİLME FONKSİYONU
+function islemSil(index) {
+  islemler.splice(index, 1);
+  verileriKaydetVeGuncelle();
+}
+
+// 6. FORM İŞLEMLERİ (Tetikleyici)
 const form = document.getElementById("form");
 
 form.addEventListener("submit", function(olay) {
   olay.preventDefault(); 
 
-  // İşte senin doldurman gereken kısım tam olarak buydu: Yeni ID'ler!
   const yeniIslem = {
     id: Math.random().toString(), 
     islemAdi: document.getElementById("islem_adi").value,
     miktar: parseFloat(document.getElementById("miktar").value) || 0 
   };
 
-  // Basit bir güvenlik önlemi: Boş veya sıfır girilirse uyar ve durdur
   if (yeniIslem.islemAdi.trim() === "" || yeniIslem.miktar === 0) {
     alert("Lütfen geçerli bir işlem adı ve miktar giriniz!");
     return;
   }
 
-  // Veriyi listeye ekle
   islemler.push(yeniIslem);
 
-  // Görevleri çalıştır
-  bakiyeGuncelle();
-  listeyiGuncelle();
+  verileriKaydetVeGuncelle();
 
-  // Formu temizle
   form.reset(); 
 });
+
+// Sayfa ilk açıldığında verileri ekrana yükle
+bakiyeGuncelle();
+listeyiGuncelle();
