@@ -1,0 +1,136 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f7f7f7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    /* Varsayılan çirkin fonttan kurtulmak için modern bir font ekledik */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+}
+
+.uygulama_alani {  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 30px;
+    width: 400px;
+}
+
+.bakiye_penceresi {
+    text-align: center;
+}
+
+.gelir_gider_tablosu {
+    display: flex;
+    width: 100%; /* 80px hatası düzeltildi */
+    justify-content: space-around;
+    background-color: #fff;
+    padding: 20px; /* 20pxd hatası düzeltildi */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Tasarım şık dursun diye hafif gölge eklendi */
+}
+
+.gelir_gider_tablosu > div {
+    text-align: center;
+    width: 50%;
+}
+
+.gelir_gider_tablosu > div:first-of-type {
+    border-right: 1px solid #ddd; /* soild hatası düzeltildi */
+}
+
+.gelen-miktar {
+    color: #2ecc71; /* Daha tatlı bir yeşil */
+    font-size: 20px;
+}
+
+.giden-miktar {
+    color: #e74c3c; /* Daha tatlı bir kırmızı */
+    font-size: 20px;
+}
+
+.islem_gecmisi {
+    width: 400px;
+}
+
+.islemler {
+    list-style-type: none;
+    padding: 0;
+}
+
+.islemler li {
+    background-color: #fff;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    margin: 10px 0;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.islemler li.gelir { /* il hatası düzeltildi */
+    border-right: 5px solid #2ecc71; /* border_right hatası düzeltildi */
+}
+
+.islemler li.gider { /* il hatası düzeltildi */
+    border-right: 5px solid #e74c3c; /* border_right hatası düzeltildi */
+}
+
+.sil-btn {
+    background-color: #e74c3c;
+    border: 0; /* boder hatası düzeltildi */
+    padding: 5px 10px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    right: -30px; /* left:0 yerine butonu listenin dışına, sağa taşıdık */
+    transform: translateY(-50%); /* Tam dikey ortalama */
+    opacity: 0; /* Üzerine gelince görünmesi için başlangıçta gizliyoruz */
+    transition: opacity 0.3s ease;
+}
+
+.islemler li:hover .sil-btn {
+    opacity: 1; /* Liste elemanının üstüne gelince buton görünür olur */
+}
+
+/* Form Tasarımı */
+#form {
+    width: 400px;
+}
+
+.form-control {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.form-control label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-control input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 4px;
+}
